@@ -10,11 +10,6 @@
 @import WebKit;
 
 @interface DashboardView ()
-{
-    CGFloat red;
-    CGFloat blue;
-    CGFloat green;
-}
 
 @property (strong, nonatomic) WebView *webView;
 
@@ -27,6 +22,7 @@
 - (instancetype)initWithFrame:(NSRect)frame isPreview:(BOOL)isPreview
 {
     self = [super initWithFrame:frame isPreview:isPreview];
+    
     if (self)
     {
         [self setup];
@@ -40,9 +36,18 @@
 {
     [self setAnimationTimeInterval:1/60.0];
     
-    red = blue = green = 0.0;
+    NSScreen *mainScreen = [NSScreen mainScreen];
+    _webView = [[WebView alloc] initWithFrame:mainScreen.frame];
     
-    _webView = [[WebView alloc] initWithFrame:NSRectFromCGRect(CGRectZero)];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(webViewFinished:)
+                                                 name:WebViewProgressFinishedNotification
+                                               object:nil];
+    
+    [_webView.mainFrame loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:@"http://teepsdashing.herokuapp.com"]]];
+    
+    [self addSubview:_webView];
+    _webView.hidden = YES;
 }
 
 #pragma mark – Animation
@@ -59,29 +64,8 @@
 
 - (void)animateOneFrame
 {
-    red += 0.01;
-    blue += 0.01;
-    green += 0.01;
-    
-    if (red > 1 || ((int)(red * 100) % 2) > 0)
-    {
-        red = 0;
-    }
-    
-    if (green > 1)
-    {
-        green = 0;
-    }
-    
-    if (blue > 1)
-    {
-        blue = 0;
-    }
-    
-    CALayer *newLayer = [CALayer layer];
-    [newLayer setBackgroundColor:CGColorCreateGenericRGB(red, green, blue, 1.0)];
-    [self setWantsLayer:YES];
-    [self setLayer:newLayer];
+    NSScreen *mainScreen = [NSScreen mainScreen];
+    _webView.frame = mainScreen.frame;
     
     return;
 }
@@ -103,6 +87,13 @@
 - (NSWindow*)configureSheet
 {
     return nil;
+}
+
+- (void)webViewFinished:(NSNotificationCenter *)notification
+{
+    NSLog(@"webViewFinished: %@", notification);
+    
+    _webView.hidden = NO;
 }
 
 @end
