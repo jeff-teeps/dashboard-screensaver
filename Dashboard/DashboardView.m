@@ -36,6 +36,8 @@
 {
     [self setAnimationTimeInterval:1/60.0];
     
+    self.layer = [self loadingLayer];
+    
     NSScreen *mainScreen = [NSScreen mainScreen];
     _webView = [[WebView alloc] initWithFrame:mainScreen.frame];
     
@@ -67,6 +69,11 @@
     NSScreen *mainScreen = [NSScreen mainScreen];
     _webView.frame = mainScreen.frame;
     
+    if (_webView.isLoading)
+    {
+        self.layer = [self loadingLayer];
+    }
+    
     return;
 }
 
@@ -96,4 +103,12 @@
     _webView.hidden = NO;
 }
 
+- (CALayer *)loadingLayer
+{
+    CALayer *loadingLayer = [CALayer layer];
+    [loadingLayer setBackgroundColor:CGColorCreateGenericRGB(0, 0, 0, 1)];
+    self.wantsLayer = YES;
+    
+    return loadingLayer;
+}
 @end
