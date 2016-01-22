@@ -48,11 +48,19 @@
 		25FD8B341C52BCF800F8A2B9 /* Dashboard */ = {
 			isa = PBXGroup;
 			children = (
+				25FD8B411C52D41200F8A2B9 /* Assets */,
 				25FD8B351C52BCF800F8A2B9 /* DashboardView.h */,
 				25FD8B371C52BCF800F8A2B9 /* DashboardView.m */,
 				25FD8B391C52BCF800F8A2B9 /* Info.plist */,
 			);
 			path = Dashboard;
+			sourceTree = "<group>";
+		};
+		25FD8B411C52D41200F8A2B9 /* Assets */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Assets;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -142,7 +150,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "cp -r $BUILD_DIR/Debug/Dashboard.saver ~/Library/Screen\\ Savers/";
+			shellScript = "echo $CONFIGURATION\n\nif [[ $CONFIGURATION == 'Debug' ]]; then\ncp -r $BUILD_DIR/Debug/Dashboard.saver ~/Library/Screen\\ Savers/\nfi";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -282,6 +290,7 @@
 				25FD8B3E1C52BCF800F8A2B9 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
