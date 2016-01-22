@@ -41,6 +41,8 @@
     [self setAnimationTimeInterval:1/60.0];
     
     red = blue = green = 0.0;
+    
+    _webView = [[WebView alloc] initWithFrame:NSRectFromCGRect(CGRectZero)];
 }
 
 #pragma mark – Animation
